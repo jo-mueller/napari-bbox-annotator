@@ -54,6 +54,8 @@ class YoloAnnotatorWidget(QWidget):
 
         # save all bounding boxes to csv file
         annotations = pd.DataFrame(columns=['class', 'x', 'y', 'width', 'height'])
+        os.makedirs(self._label_dir, exist_ok=True)
+
         for i in range(self.tableWidget_annotations.rowCount()):
             name_layer = self.tableWidget_annotations.item(i, 0).text() + "_boxes"
             boxes = self.napari_viewer.layers[name_layer].data
@@ -71,7 +73,6 @@ class YoloAnnotatorWidget(QWidget):
                     abs(box[1, 1] - box[1, 0]) / image_dim1,
                     abs(box[-1, 0] - box[0, 0]) / image_dim2]
 
-        os.makedirs(self._label_dir, exist_ok=True)
         item = self.listWidget_files.selectedItems()[0]
         annotations.to_csv(os.path.join(self._label_dir, item.text().replace('.png', '.txt')),
                            index=False, header=False, sep=' ')

@@ -1,25 +1,15 @@
 name: napari-yolo
-display_name: Yolo
+display_name: YOLO
 # use 'hidden' to remove plugin from napari hub search results
 visibility: public
 # see https://napari.org/stable/plugins/manifest.html for valid categories
-categories: ["Annotation", "Segmentation", "Acquisition"]
+categories: ["Annotation", "Segmentation"]
 contributions:
   commands:
-    - id: napari-yolo.make_qwidget
-      python_name: napari_yolo._widget:ExampleQWidget
+    - id: napari-yolo.annotator_widget
+      python_name: napari_yolo._widget:YoloAnnotatorWidget
       title: Make example QWidget
-    - id: napari-yolo.make_magic_widget
-      python_name: napari_yolo._widget:example_magic_widget
-      title: Make example magic widget
-    - id: napari-yolo.make_func_widget
-      python_name: napari_yolo._widget:example_function_widget
-      title: Make example function widget
   widgets:
-    - command: napari-yolo.make_qwidget
-      display_name: Example QWidget
-    - command: napari-yolo.make_magic_widget
-      display_name: Example Magic Widget
-    - command: napari-yolo.make_func_widget
-      autogenerate: true
-      display_name: Example Function Widget
+    - command: napari-yolo.annotator_widget
+      display_name: Annotator Widget
+

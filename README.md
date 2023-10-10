@@ -41,6 +41,8 @@ The rectangle tool is auto-selected. To select the class you want to annotate, y
 
 If you are happy with your annotation, click on the `Save >> next` button on the bottom of the widget. This will load the next image into the viewer and you can start annotating. Annotated images will be marked as green in the list widget.
 
+![](./docs/imgs/annotation_in_progress_done_multiple.png)
+
 ## Installation
 
 You can install `napari-yolo` via [pip]:

@@ -15,6 +15,7 @@ def test_widget(make_napari_viewer):
 
 def test_annotation(make_napari_viewer):
     import os
+    from pathlib import Path
 
     dummy_boxes = [np.array([
             [80, 51],
@@ -39,8 +40,11 @@ def test_annotation(make_napari_viewer):
     my_widget._on_add_row()
     my_widget._on_add_row()
 
-    my_widget._directory_path = r'.\src\napari_yolo\_tests\imgs'
-    my_widget._label_dir = r'.\src\napari_yolo\_tests\labels'
+    # get location of current file
+    current = Path(__file__).parent.absolute()
+
+    my_widget._directory_path = os.path.join(current, '_tests', 'imgs')
+    my_widget._label_dir = os.path.join(current, '_tests', 'labels')
     os.makedirs(my_widget._label_dir, exist_ok=True)
     for file in os.listdir(my_widget._directory_path):
         my_widget.listWidget_files.addItem(file)

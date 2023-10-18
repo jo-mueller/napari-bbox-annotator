@@ -43,8 +43,8 @@ def test_annotation(make_napari_viewer):
     # get location of current file
     current = Path(__file__).parent.absolute()
 
-    my_widget._directory_path = os.path.join(current, '_tests', 'imgs')
-    my_widget._label_dir = os.path.join(current, '_tests', 'labels')
+    my_widget._directory_path = os.path.join(current, 'imgs')
+    my_widget._label_dir = os.path.join(current, 'labels')
     os.makedirs(my_widget._label_dir, exist_ok=True)
     for file in os.listdir(my_widget._directory_path):
         my_widget.listWidget_files.addItem(file)

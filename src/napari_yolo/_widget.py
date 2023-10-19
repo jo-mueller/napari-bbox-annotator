@@ -103,7 +103,6 @@ class YoloAnnotatorWidget(QWidget):
 
     def _on_image_list_selected(self):
         from skimage import io
-        from copy import deepcopy
 
         # get selected item
         item = self.listWidget_files.selectedItems()[0]
@@ -113,10 +112,9 @@ class YoloAnnotatorWidget(QWidget):
             self.napari_viewer.layers.remove(self._image_layer.name)
 
         # clear previous boxes
-        current_layers = deepcopy(self.napari_viewer.layers)
-        for layer in current_layers:
-            if layer.name.endswith('_boxes'):
-                self.napari_viewer.layers.remove(layer.name)
+        layers_to_remove = [layer.name for layer in self.napari_viewer.layers if layer.name.endswith('_boxes')]
+        for name in layers_to_remove:
+            self.napari_viewer.layers.remove(name)
 
         # load image from listWidget_files
         self._image_path = os.path.join(self._directory_path, item.text())

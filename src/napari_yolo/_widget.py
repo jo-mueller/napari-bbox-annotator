@@ -82,7 +82,8 @@ class YoloAnnotatorWidget(QWidget):
 
         # Move to next item
         index = self.listWidget_files.currentRow()
-        self.listWidget_files.setCurrentRow(index+1)
+        if index < self.listWidget_files.count() - 1:
+            self.listWidget_files.setCurrentRow(index+1)
 
     def _on_browse_button_clicked(self):
         file_dialog = QFileDialog()

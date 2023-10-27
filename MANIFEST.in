@@ -4,5 +4,5 @@ include README.md
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
 
-recursive-include *.ui
+include src/napari_yolo/*.ui
 recursive-include *.png

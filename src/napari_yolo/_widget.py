@@ -50,6 +50,13 @@ class YoloAnnotatorWidget(QWidget):
         # select first row in tableWidget_annotations
         self.tableWidget_annotations.setCurrentCell(0, 0)
 
+    def _check_existing_anntations(self):
+        # check if there are already annotations for the selected image
+        for i in range(self.listWidget_files.count()):
+            item = self.listWidget_files.item(i)
+            if os.path.exists(os.path.join(self._label_dir, item.text().replace('.png', '.txt'))):
+                item.setForeground(QColor('green'))
+
     def _on_next_image(self):
 
         # save all bounding boxes to csv file
@@ -64,14 +71,20 @@ class YoloAnnotatorWidget(QWidget):
             image_dim2 = self._image_layer.data.shape[1]
 
             for box in boxes:
-                center = box.mean(axis=0)
+                x = box[:, 0]
+                y = box[:, 1]
+                width = x.max() - x.min()
+                height = y.max() - y.min()
+                center_x = x.mean()
+                center_y = y.mean()
                 # add as row to dataframe without append
                 annotations.loc[len(annotations)] = [
                     int(i),
-                    center[0] / image_dim1,
-                    center[1] / image_dim2,
-                    abs(box[1, 1] - box[1, 0]) / image_dim1,
-                    abs(box[-1, 0] - box[0, 0]) / image_dim2]
+                    center_x / image_dim1,
+                    center_y / image_dim2,
+                    width / image_dim1,
+                    height / image_dim2
+                    ]
 
         item = self.listWidget_files.selectedItems()[0]
         annotations.to_csv(os.path.join(self._label_dir, item.text().replace('.png', '.txt')),
@@ -95,12 +108,17 @@ class YoloAnnotatorWidget(QWidget):
         self._directory_path = file_dialog.selectedFiles()[0]
         self.lineEdit_directory.setText(self._directory_path)
 
+        # if no folder was selected
+        if self._directory_path == '':
+            return
+
         # find all files in directory and add to listWidget_files
         self.listWidget_files.clear()
         for file in os.listdir(self._directory_path):
             self.listWidget_files.addItem(file)
 
         self._label_dir = os.path.join(self._directory_path, '..', 'labels')
+        self._check_existing_anntations()
 
     def _on_image_list_selected(self):
         from skimage import io
@@ -122,9 +140,22 @@ class YoloAnnotatorWidget(QWidget):
         image = io.imread(self._image_path)
         self._image_layer = self.napari_viewer.add_image(image, name=item.text(),
                                                          blending='additive')
-
+        
         # create shapes layers
         self._update_shapes_layers()
+        
+        # load annotations if they exist
+        label_file = os.path.join(self._label_dir, item.text().replace('.png', '.txt'))
+
+        if os.path.exists(label_file):
+            classes, vertices = self._load_annotations(label_file)
+            if classes is None:
+                return
+            for obj_class, box in zip(classes, vertices):
+                # get name from tableWidget_annotations
+                name = self.tableWidget_annotations.item(obj_class, 0).text() + "_boxes"
+                self.napari_viewer.layers[name].add(
+                    box, shape_type='rectangle')
 
     def _update_shapes_layers(self):
 
@@ -167,3 +198,81 @@ class YoloAnnotatorWidget(QWidget):
         active_layer = self.napari_viewer.layers[name_layer]
         self.napari_viewer.layers.selection.active = active_layer
         active_layer.mode = 'add_rectangle'
+
+    def _load_annotations(self, filename):
+        import numpy as np
+        try:
+            self._box_labels = pd.read_csv(filename, header=None, sep=' ')
+        except Exception:
+            return None, None
+        self._box_labels.columns = ['class', 'x', 'y', 'width', 'height']
+        self._box_labels['x'] = self._box_labels['x'] * self._image_layer.data.shape[0]
+        self._box_labels['y'] = self._box_labels['y'] * self._image_layer.data.shape[1]
+        self._box_labels['width'] = self._box_labels['width'] * self._image_layer.data.shape[0]
+        self._box_labels['height'] = self._box_labels['height'] * self._image_layer.data.shape[1]
+
+        boxes = []
+        classes = []
+        for i in range(self._box_labels.shape[0]):
+            x, y, w, h = self._box_labels.iloc[i, 1:].values
+            vertices = self._bbox_to_vertices(x, y, w, h)
+            boxes.append(vertices)
+            classes.append(self._box_labels.iloc[i, 0])
+
+        return classes, np.array(boxes)
+
+
+    # def correct_messy_annotations(self, h, _w, x1, x2):
+    #     import numpy as np
+    #     A =  np.array([
+    #         [1, -1, 0, 0],
+    #         [0.5, 0.5, 0, 0],
+    #         [0, 0, 0.5, 0.5],
+    #         [0, 1, 0, -1]
+    #     ])
+
+    #     b = np.array([h, x1, x2, _w])
+
+    #     ymax, ymin, xmax, xmin = np.linalg.solve(A, b)
+
+    #     correct_width = xmax - xmin
+    #     correct_height = ymax - ymin
+
+    #     vertices = np.array([
+    #         [ymin, xmin],
+    #         [ymin, xmax],
+    #         [ymax, xmax],
+    #         [ymax, xmin]
+    #     ])
+
+    #     # if eccentricity is too high, then the annotation is probably wrong
+    #     long_side = max(correct_width, correct_height)
+    #     short_side = min(correct_width, correct_height)
+    #     eccentricity = abs(long_side / short_side)
+    #     if eccentricity < 1.5:
+    #         return vertices
+    #     else: 
+    #         return self.correct_messy_annotations(h, -_w, x1, x2)
+
+
+    def _bbox_to_vertices(self, x_center, y_center, width, height):
+        x_min = x_center - width / 2
+        x_max = x_center + width / 2
+        y_min = y_center - height / 2
+        y_max = y_center + height / 2
+
+        return [
+            [x_min, y_min],
+            [x_min, y_max],
+            [x_max, y_max],
+            [x_max, y_min],
+        ]
+        
+    
+    def _vertices_to_bbox(self, vertices):
+        center_x = vertices[:, 0].mean()
+        center_y = vertices[:, 1].mean()
+        width = vertices[:, 0].max() - vertices[:, 0].min()
+        height = vertices[:, 1].max() - vertices[:, 1].min()
+
+        return center_x, center_y, width, height

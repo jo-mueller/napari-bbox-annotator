@@ -80,10 +80,10 @@ class YoloAnnotatorWidget(QWidget):
                 # add as row to dataframe without append
                 annotations.loc[len(annotations)] = [
                     int(i),
-                    center_x / image_dim1,
                     center_y / image_dim2,
-                    width / image_dim1,
-                    height / image_dim2
+                    center_x / image_dim1,
+                    height / image_dim2,
+                    width / image_dim1
                     ]
 
         item = self.listWidget_files.selectedItems()[0]
@@ -140,10 +140,10 @@ class YoloAnnotatorWidget(QWidget):
         image = io.imread(self._image_path)
         self._image_layer = self.napari_viewer.add_image(image, name=item.text(),
                                                          blending='additive')
-        
+
         # create shapes layers
         self._update_shapes_layers()
-        
+
         # load annotations if they exist
         label_file = os.path.join(self._label_dir, item.text().replace('.png', '.txt'))
 
@@ -214,7 +214,7 @@ class YoloAnnotatorWidget(QWidget):
         boxes = []
         classes = []
         for i in range(self._box_labels.shape[0]):
-            x, y, w, h = self._box_labels.iloc[i, 1:].values
+            y, x, h, w = self._box_labels.iloc[i, 1:].values
             vertices = self._bbox_to_vertices(x, y, w, h)
             boxes.append(vertices)
             classes.append(self._box_labels.iloc[i, 0])

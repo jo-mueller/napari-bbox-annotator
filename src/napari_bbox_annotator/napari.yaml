@@ -1,15 +1,15 @@
-name: napari-yolo
-display_name: YOLO
+name: napari-bbox-annotator
+display_name: bbox-annotator
 # use 'hidden' to remove plugin from napari hub search results
 visibility: public
 # see https://napari.org/stable/plugins/manifest.html for valid categories
 categories: ["Annotation", "Segmentation"]
 contributions:
   commands:
-    - id: napari-yolo.annotator_widget
-      python_name: napari_yolo._widget:YoloAnnotatorWidget
-      title: Make example QWidget
+    - id: napari-bbox-annotator.annotator_widget
+      python_name: napari_bbox_annotator._widget:YoloAnnotatorWidget
+      title: Make annotator widget
   widgets:
-    - command: napari-yolo.annotator_widget
+    - command: napari-bbox-annotator.annotator_widget
       display_name: Annotator Widget
 

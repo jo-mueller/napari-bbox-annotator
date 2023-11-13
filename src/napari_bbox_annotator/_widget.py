@@ -21,7 +21,7 @@ if TYPE_CHECKING:
     import napari
 
 
-class YoloAnnotatorWidget(QWidget):
+class BboxAnnotatorWidget(QWidget):
     def __init__(self, napari_viewer: "napari.Viewer"):
         super().__init__()
         self.napari_viewer = napari_viewer

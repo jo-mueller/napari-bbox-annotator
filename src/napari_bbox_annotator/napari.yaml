@@ -7,7 +7,7 @@ categories: ["Annotation", "Segmentation"]
 contributions:
   commands:
     - id: napari-bbox-annotator.annotator_widget
-      python_name: napari_bbox_annotator._widget:YoloAnnotatorWidget
+      python_name: napari_bbox_annotator._widget:BboxAnnotatorWidget
       title: Make annotator widget
   widgets:
     - command: napari-bbox-annotator.annotator_widget

@@ -1,6 +1,6 @@
 import numpy as np
 
-from napari_yolo import YoloAnnotatorWidget
+from napari_bbox_annotator import BboxAnnotatorWidget
 
 
 # make_napari_viewer is a pytest fixture that returns a napari viewer object
@@ -11,7 +11,7 @@ def test_widget(make_napari_viewer):
     viewer.add_image(np.random.random((100, 100)))
 
     # create our widget, passing in the viewer
-    my_widget = YoloAnnotatorWidget(viewer)
+    my_widget = BboxAnnotatorWidget(viewer)
 
 def test_annotation(make_napari_viewer):
     import os
@@ -33,7 +33,7 @@ def test_annotation(make_napari_viewer):
     viewer = make_napari_viewer()
 
     # create our widget, passing in the viewer
-    my_widget = YoloAnnotatorWidget(viewer)
+    my_widget = BboxAnnotatorWidget(viewer)
     viewer.window.add_dock_widget(my_widget)
 
     # add row to tableWidget_annotations

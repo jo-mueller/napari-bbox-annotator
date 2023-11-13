@@ -1,11 +1,11 @@
-# napari-yolo
+# napari-bbox-annotator
 
-[![License BSD-3](https://img.shields.io/pypi/l/napari-yolo.svg?color=green)](https://github.com/jo-mueller/napari-yolo/raw/main/LICENSE)
-[![PyPI](https://img.shields.io/pypi/v/napari-yolo.svg?color=green)](https://pypi.org/project/napari-yolo)
-[![Python Version](https://img.shields.io/pypi/pyversions/napari-yolo.svg?color=green)](https://python.org)
-[![tests](https://github.com/jo-mueller/napari-yolo/workflows/tests/badge.svg)](https://github.com/jo-mueller/napari-yolo/actions)
-[![codecov](https://codecov.io/gh/jo-mueller/napari-yolo/branch/main/graph/badge.svg)](https://codecov.io/gh/jo-mueller/napari-yolo)
-[![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari-yolo)](https://napari-hub.org/plugins/napari-yolo)
+[![License BSD-3](https://img.shields.io/pypi/l/napari-bbox-annotator.svg?color=green)](https://github.com/jo-mueller/napari-bbox-annotator/raw/main/LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/napari-bbox-annotator.svg?color=green)](https://pypi.org/project/napari-bbox-annotator)
+[![Python Version](https://img.shields.io/pypi/pyversions/napari-bbox-annotator.svg?color=green)](https://python.org)
+[![tests](https://github.com/jo-mueller/napari-bbox-annotator/workflows/tests/badge.svg)](https://github.com/jo-mueller/napari-bbox-annotator/actions)
+[![codecov](https://codecov.io/gh/jo-mueller/napari-bbox-annotator/branch/main/graph/badge.svg)](https://codecov.io/gh/jo-mueller/napari-bbox-annotator)
+[![napari hub](https://img.shields.io/endpoint?url=https://api.napari-hub.org/shields/napari-bbox-annotator)](https://napari-hub.org/plugins/napari-bbox-annotator)
 
 Bridge between napari and Yolo
 
@@ -23,7 +23,7 @@ https://napari.org/stable/plugins/index.html
 
 ## Usage
 
-To use, the plugin, open then `AnnotatorWidget` from the napari Plugins menu (`Plugins > Annotator Widget (napari-yolo)`). Before you start annotating, define the classes in your dataset by adding as many classes as you want with the `Add class` button. You can give a specific name to each of the classes you want to draw.
+To use, the plugin, open then `AnnotatorWidget` from the napari Plugins menu (`Plugins > Annotator Widget (napari-bbox-annotator)`). Before you start annotating, define the classes in your dataset by adding as many classes as you want with the `Add class` button. You can give a specific name to each of the classes you want to draw.
 
 ![](./docs/imgs/widget.PNG)
 
@@ -45,15 +45,15 @@ If you are happy with your annotation, click on the `Save >> next` button on the
 
 ## Installation
 
-You can install `napari-yolo` via [pip]:
+You can install `napari-bbox-annotator` via [pip]:
 
-    pip install napari-yolo
+    pip install napari-bbox-annotator
 
 
 
 To install latest development version :
 
-    pip install git+https://github.com/jo-mueller/napari-yolo.git
+    pip install git+https://github.com/jo-mueller/napari-bbox-annotator.git
 
 
 ## Contributing
@@ -64,7 +64,7 @@ the coverage at least stays the same before you submit a pull request.
 ## License
 
 Distributed under the terms of the [BSD-3] license,
-"napari-yolo" is free and open source software
+"napari-bbox-annotator" is free and open source software
 
 ## Issues
 
@@ -81,7 +81,7 @@ If you encounter any problems, please [file an issue] along with a detailed desc
 [Mozilla Public License 2.0]: https://www.mozilla.org/media/MPL/2.0/index.txt
 [cookiecutter-napari-plugin]: https://github.com/napari/cookiecutter-napari-plugin
 
-[file an issue]: https://github.com/jo-mueller/napari-yolo/issues
+[file an issue]: https://github.com/jo-mueller/napari-bbox-annotator/issues
 
 [napari]: https://github.com/napari/napari
 [tox]: https://tox.readthedocs.io/en/latest/

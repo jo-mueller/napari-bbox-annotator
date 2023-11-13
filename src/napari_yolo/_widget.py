@@ -206,10 +206,10 @@ class YoloAnnotatorWidget(QWidget):
         except Exception:
             return None, None
         self._box_labels.columns = ['class', 'x', 'y', 'width', 'height']
-        self._box_labels['x'] = self._box_labels['x'] * self._image_layer.data.shape[0]
-        self._box_labels['y'] = self._box_labels['y'] * self._image_layer.data.shape[1]
-        self._box_labels['width'] = self._box_labels['width'] * self._image_layer.data.shape[0]
-        self._box_labels['height'] = self._box_labels['height'] * self._image_layer.data.shape[1]
+        self._box_labels['x'] = self._box_labels['x'] * self._image_layer.data.shape[1]
+        self._box_labels['y'] = self._box_labels['y'] * self._image_layer.data.shape[0]
+        self._box_labels['width'] = self._box_labels['width'] * self._image_layer.data.shape[1]
+        self._box_labels['height'] = self._box_labels['height'] * self._image_layer.data.shape[0]
 
         boxes = []
         classes = []

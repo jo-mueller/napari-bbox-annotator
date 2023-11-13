@@ -22,14 +22,14 @@ def test_annotation(make_napari_viewer):
             [80, 73],
             [93, 73],
             [93, 51]
-        ]),
+        ], dtype=float),
         np.array([
             [72, 61],
             [72, 74],
             [85, 74],
             [85, 61]
-        ])]
-    
+        ], dtype=float)]
+
     viewer = make_napari_viewer()
 
     # create our widget, passing in the viewer
@@ -61,4 +61,10 @@ def test_annotation(make_napari_viewer):
     assert len(viewer.layers['Cell_boxes'].data) == 0
     assert len(viewer.layers['2_boxes'].data) == 0
     assert len(viewer.layers['3_boxes'].data) == 0
-    
+
+    # select first item again
+    my_widget.listWidget_files.setCurrentRow(0)
+
+    # make sure boxes are still there
+    for i, box in enumerate(viewer.layers['Cell_boxes'].data):
+        assert np.allclose(box, dummy_boxes[i], atol=1e-5)

@@ -153,7 +153,7 @@ class YoloAnnotatorWidget(QWidget):
                 return
             for obj_class, box in zip(classes, vertices):
                 # get name from tableWidget_annotations
-                name = self.tableWidget_annotations.item(obj_class, 0).text() + "_boxes"
+                name = self.tableWidget_annotations.item(int(obj_class), 0).text() + "_boxes"
                 self.napari_viewer.layers[name].add(
                     box, shape_type='rectangle')
 

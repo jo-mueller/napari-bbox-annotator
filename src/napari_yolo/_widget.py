@@ -153,7 +153,7 @@ class YoloAnnotatorWidget(QWidget):
                 return
             for obj_class, box in zip(classes, vertices):
                 # get name from tableWidget_annotations
-                name = self.tableWidget_annotations.item(obj_class, 0).text() + "_boxes"
+                name = self.tableWidget_annotations.item(int(obj_class), 0).text() + "_boxes"
                 self.napari_viewer.layers[name].add(
                     box, shape_type='rectangle')
 
@@ -206,10 +206,10 @@ class YoloAnnotatorWidget(QWidget):
         except Exception:
             return None, None
         self._box_labels.columns = ['class', 'x', 'y', 'width', 'height']
-        self._box_labels['x'] = self._box_labels['x'] * self._image_layer.data.shape[0]
-        self._box_labels['y'] = self._box_labels['y'] * self._image_layer.data.shape[1]
-        self._box_labels['width'] = self._box_labels['width'] * self._image_layer.data.shape[0]
-        self._box_labels['height'] = self._box_labels['height'] * self._image_layer.data.shape[1]
+        self._box_labels['x'] = self._box_labels['x'] * self._image_layer.data.shape[1]
+        self._box_labels['y'] = self._box_labels['y'] * self._image_layer.data.shape[0]
+        self._box_labels['width'] = self._box_labels['width'] * self._image_layer.data.shape[1]
+        self._box_labels['height'] = self._box_labels['height'] * self._image_layer.data.shape[0]
 
         boxes = []
         classes = []
